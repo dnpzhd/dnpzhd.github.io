@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>2512活动</title>
+</head>
+<body>
+<a href="./index.html">返回</a>
+
+<h2>投稿区</h2>
+<form id="submitForm">
+  <textarea id="content" rows="4" cols="50" placeholder="请输入你的投稿内容，可以插入图片链接"></textarea><br>
+  <button type="submit">提交</button>
+</form>
+
+<h3>投稿展示</h3>
+<ul id="postList"></ul>
+
+<script>
+  const form = document.getElementById('submitForm');
+  const content = document.getElementById('content');
+  const postList = document.getElementById('postList');
+
+  function parseContent(text) {
+    // 匹配图片链接（以 .jpg/.png/.gif/.jpeg 结尾的 http/https 链接）
+    const imgRegex = /(https?:\/\/[^\s]+?\.(jpg|jpeg|png|gif))/gi;
+    // 替换为 <img> 标签
+    return text.replace(imgRegex, function(url) {
+      return `<br><img src="${url}" alt="图片" style="max-width:300px;"><br>`;
+    }).replace(/\n/g, '<br>'); // 保留换行
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if(content.value.trim() !== "") {
+      const li = document.createElement('li');
+      li.innerHTML = parseContent(content.value);
+      postList.appendChild(li);
+      content.value = "";
+    }
+  });
+</script>
+
+</body>
+</html>
